@@ -28,18 +28,13 @@ def index():
 @app.route("/update/")
 def update():
     # make the meetup call
-    meetups = fetch_meetups(SF_TOP_LEFT, SF_BOTTOM_RIGHT, SF_RADIUS)
+    meetups = fetch_meetups(SF_CENTROID, SF_RADIUS)
     
-    app.logger.info("Fetched %s meetups using the API." % len(meetups))
+    app.logger.info("Fetched a total of %s meetups using the API." % len(meetups))
     
     # store in simplegeo
 
-def fetch_meetups(top_left_pt, bottom_right_pt, radius):
-    exes = [top_left_pt.x, bottom_right_pt.x]
-    whys = [top_left_pt.y, bottom_right_pt.y]
-    bbox = Polygon.from_bbox((min(exes), min(whys), max(exes), max(whys)))
-    point = bbox.centroid
-    
+def fetch_meetups(point, radius):
     url = "http://api.meetup.com/2/open_events.json?%s" % urllib.urlencode({
         'key': MEETUP_API_KEY,
         'radius': radius.mi,
@@ -49,55 +44,41 @@ def fetch_meetups(top_left_pt, bottom_right_pt, radius):
         'fields': 'trending_rank',
     })
     
+    meetups, meta = meetup_api_call(url)
+    
+    total_count = meta['total_count']
+    
+    app.logger.info("%s/%s meetups fetched." % (len(meetups), total_count))
+    
+    while 'next' in meta and meta['next']:
+        new_meetups, meta = meetup_api_call(meta['next'])
+        meetups += new_meetups
+        
+        app.logger.info("%s/%s meetups fetched (+%s)." % (len(meetups), total_count, 
+            len(new_meetups)))
+    
+    return meetups
+
+def meetup_api_call(url):
     app.logger.debug("Making API call to: %s" % url)
     
     h = httplib2.Http(".cache")
     resp, content = h.request(url, "GET")
     
     if resp['status'] != '200':
-        import ipdb; ipdb.set_trace()
         app.logger.error("API call returned: %s" % content)
         return []
-    import ipdb; ipdb.set_trace()
     
-    meetups = simplejson.loads(content.decode("utf-8", "replace"), strict=False)['results']
+    try:
+        response = simplejson.loads(unicode(content, 'latin1'), strict=False)
+    except simplejson.JSONDecodeError, e:
+        app.logger.error("JSONDecodeError: %s" % e)
+        import ipdb; ipdb.set_trace()
     
-    app.logger.info("Fetched %s meetups using the API." % len(meetups))
+    meetups = response['results']
+    meta = response['meta']
     
-    if len(meetups) < 199:
-        return meetups
-    else:
-        # recurse this mutha
-        meetups = []
-        
-        quadrants = quarter(top_left_pt, bottom_right_pt)
-        for q_top_left_pt, q_bottom_right_pt in quadrants:
-            meetups += fetch_meetups(q_top_left_pt, q_bottom_right_pt, radius / 2)
-        
-        return meetups
-
-def quarter(top_left, bottom_right):
-    """
-    Takes two points that define a bounding box, quarters the bounding box, and
-    returns eight points that define the four quandrants
-    """
-    halfway_between = lambda p, q: Point((p.x+q.x)/2, (p.y+q.y)/2)
-    
-    top_right = Point(bottom_right.x, top_left.y)
-    bottom_left = Point(top_left.x, bottom_right.y)
-    
-    top_middle = halfway_between(top_left, top_right)
-    middle_right = halfway_between(top_right, bottom_right)
-    left_middle = halfway_between(top_left, bottom_left)
-    bottom_middle = halfway_between(bottom_left, bottom_right)
-    middle_middle = halfway_between(top_middle, bottom_middle)
-    
-    return [
-        (top_middle, middle_right), # quadrant 1
-        (top_left, middle_middle), # quadrant 2
-        (left_middle, bottom_middle), # quadrant 3
-        (middle_middle, bottom_right), # quadrant 4
-    ]
+    return meetups, meta
 
 
 if __name__ == "__main__":
