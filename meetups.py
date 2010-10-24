@@ -2,18 +2,9 @@ from django.contrib.gis.geos import Point, Polygon
 from django.contrib.gis.measure import D
 from flask import Flask, render_template, request, url_for
 import httplib2, simplegeo, simplejson, urllib
+import settings_local as settings
 
 app = Flask(__name__)
-
-# meetup settings
-MEETUP_API_KEY = '786e7745f52527d5f5b14783949'
-
-# simplegeo settings
-SIMPLEGEO_AUTH_TOKEN = 'eTRVDwr6Urg9bFJAKnsvLepwS8Tb7a4V'
-SIMPLEGEO_AUTH_SECRET = 'ePggRKVfYxUCrMdQZgbQKqUXR4zaDGeP'
-SIMPLEGEO_LAYER_NAME = 'meetups'
-
-geo = simplegeo.Client(SIMPLEGEO_AUTH_TOKEN, SIMPLEGEO_AUTH_SECRET)
 
 # THIS IS SPARTA
 SF_CENTROID = Point(-122.45575, 37.76365)
@@ -37,20 +28,21 @@ def update():
     meetups = add_topics(meetups)
     
     # store in simplegeo
+    geo = simplegeo.Client(settings.SIMPLEGEO_AUTH_TOKEN, settings.SIMPLEGEO_AUTH_SECRET)
     records = [meetup2record(m) for m in meetups]
     app.logger.debug("%s records to add to simplegeo." % len(records))
     
     i = 0
     while i < len(records):
         app.logger.debug("Adding #%s to #%s." % (i, i+99))
-        geo.add_records(SIMPLEGEO_LAYER_NAME, records[i:i+99])
+        geo.add_records(settings.SIMPLEGEO_LAYER_NAME, records[i:i+99])
         i += 99
     
     return "Done!"
 
 def fetch_meetups(point, radius):
     url = "http://api.meetup.com/2/open_events.json?%s" % urllib.urlencode({
-        'key': MEETUP_API_KEY,
+        'key': settings.MEETUP_API_KEY,
         'radius': radius.mi,
         'lat': point.y,
         'lon': point.x,
@@ -77,7 +69,7 @@ def add_topics(meetups):
     uniqueify = lambda l: list(set(l))
     
     url = "https://api.meetup.com/groups.json?%s" % urllib.urlencode({
-        'key': MEETUP_API_KEY,
+        'key': settings.MEETUP_API_KEY,
         'id': ",".join(uniqueify([str(m['group']['id']) for m in meetups])),
     })
     
@@ -107,7 +99,7 @@ def meetup_api_call(url):
     return response['results'], response['meta']
 
 def meetup2record(meetup):
-    return simplegeo.Record(SIMPLEGEO_LAYER_NAME, meetup['id'], meetup['venue']['lat'],
+    return simplegeo.Record(settings.SIMPLEGEO_LAYER_NAME, meetup['id'], meetup['venue']['lat'],
         meetup['venue']['lon'], event_url=meetup['event_url'], group_name=meetup['group']['name'],
         topics=":".join(meetup['group']['topics']), name=meetup['name'], time=meetup['time'],
         trending_rank=meetup['trending_rank'], yes_rsvp_count=meetup['yes_rsvp_count'],
