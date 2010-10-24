@@ -1,4 +1,0 @@
-<Response>
-    <Say>Hello Sha. How many minutes is your wait for lunch right now?</Say>
-    <Record transcribe="true" transcribeCallback="{{ transcribe_callback }}" maxLength="10" />
-</Response>

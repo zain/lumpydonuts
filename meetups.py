@@ -11,10 +11,6 @@ SF_CENTROID = Point(-122.45575, 37.76365)
 SF_RADIUS = D(mi=5)
 
 
-@app.route("/")
-def index():
-    return render_template("index.html", msg=request.form.get("msg", ""))
-
 @app.route("/update/")
 def update():
     # make the meetup call
