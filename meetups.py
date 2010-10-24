@@ -28,11 +28,12 @@ def update():
     records = [meetup2record(m) for m in meetups]
     app.logger.debug("%s records to add to simplegeo." % len(records))
     
+    # limit of 100 records per batch insert, so we'll chop it up
     i = 0
     while i < len(records):
-        app.logger.debug("Adding #%s to #%s." % (i, i+99))
-        geo.add_records(settings.SIMPLEGEO_LAYER_NAME, records[i:i+99])
-        i += 99
+        app.logger.debug("Adding #%s to #%s." % (i, i+100))
+        geo.add_records(settings.SIMPLEGEO_LAYER_NAME, records[i:i+100])
+        i += 100
     
     return "Done!"
 
