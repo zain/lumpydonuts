@@ -54,7 +54,7 @@ def fetch_meetups(point, radius):
     
     app.logger.info("%s/%s meetups fetched." % (len(meetups), meta['total_count']))
     
-    while False and 'next' in meta and meta['next']:
+    while 'next' in meta and meta['next']:
         new_meetups, meta = meetup_api_call(meta['next'])
         meetups += new_meetups
         
