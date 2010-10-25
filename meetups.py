@@ -1,7 +1,7 @@
-from django.contrib.gis.geos import Point, Polygon
+from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from flask import Flask, render_template, request, url_for
-import httplib2, simplegeo, simplejson, urllib
+import httplib2, operator, simplegeo, simplejson, urllib
 import settings_local as settings
 
 app = Flask(__name__)
@@ -10,6 +10,34 @@ app = Flask(__name__)
 SF_CENTROID = Point(-122.45575, 37.76365)
 SF_RADIUS = D(mi=5)
 
+geo = simplegeo.Client(settings.SIMPLEGEO_AUTH_TOKEN, settings.SIMPLEGEO_AUTH_SECRET)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/meetups.json")
+def meetups():
+    meetups = geo.get_nearby(settings.SIMPLEGEO_LAYER_NAME, SF_CENTROID.y, SF_CENTROID.x, 
+        radius=5, limit=500)
+    
+    return simplejson.dumps(meetups)
+
+@app.route("/topic_rollup.json")
+def topic_rollup():
+    topics = []
+    topic_counts = []
+    
+    meetups = geo.get_nearby(settings.SIMPLEGEO_LAYER_NAME, SF_CENTROID.y, SF_CENTROID.x, 
+        radius=5, limit=500)
+    
+    for meetup in meetups['features']:
+        topics += meetup['properties']['topics'].split(":")
+    
+    for topic in set(topics):
+        topic_counts.append((topic, topics.count(topic)))
+    
+    return simplejson.dumps(sorted(topic_counts, key=lambda t: t[1], reverse=True))
 
 @app.route("/update/")
 def update():
@@ -24,7 +52,6 @@ def update():
     meetups = add_topics(meetups)
     
     # store in simplegeo
-    geo = simplegeo.Client(settings.SIMPLEGEO_AUTH_TOKEN, settings.SIMPLEGEO_AUTH_SECRET)
     records = [meetup2record(m) for m in meetups]
     app.logger.debug("%s records to add to simplegeo." % len(records))
     
