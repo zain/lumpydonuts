@@ -1,0 +1,14 @@
+status: 200
+content-length: 501
+content-location: http://api.meetup.com/2/open_events.json?key=786e7745f52527d5f5b14783949&status=upcoming&radius=5.0&format=json&lat=37.76365&page=200&desc=False&offset=2&time=%2C1w&fields=trending_rank&lon=-122.45575
+vary: Accept-Encoding,User-Agent
+server: Apache-Coyote/1.1
+connection: close
+-content-encoding: gzip
+x-meetup-server: web15.int.meetup.com
+date: Sun, 24 Oct 2010 23:32:53 GMT
+content-type: text/javascript;charset=ISO-8859-1
+-varied-accept-encoding: gzip, deflate
+-varied-user-agent: Python-httplib2/$Rev$
+
+{"results":[],"meta":{"lon":-122.45575,"count":0,"link":"http:\/\/api.meetup.com\/2\/open_events.json","next":"","total_count":0,"url":"http:\/\/api.meetup.com\/2\/open_events.json?key=786e7745f52527d5f5b14783949&status=upcoming&radius=5.0&format=json&lat=37.76365&page=200&desc=False&offset=2&time=%2C1w&fields=trending_rank&lon=-122.45575","id":"","title":"Meetup Open Events v2","updated":1287963173114,"description":"API method for accessing public Meetups","method":"OpenEvents","lat":37.76365}}

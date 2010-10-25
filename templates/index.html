@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title></title>
+    <script type="text/javascript" src="http://github.com/simplegeo/polymaps/raw/v2.3.0/polymaps.min.js"></script>
+	<script type="text/javascript" src="http://github.com/simplegeo/polymaps/raw/v2.3.0/lib/crimespotting/crimespotting.js"></script>
+	<script type="text/javascript" src="http://github.com/protovis/protovis/raw/v3.3.1/examples/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="http://github.com/protovis/protovis/raw/v3.3.1/examples/slider/jquery-ui-1.8rc3.custom.min.js"></script>
+	
+	<script type="text/javascript" src="/static/lib/jquery.qtip-1.0.0-rc3-dm.js"></script>
+	
+	<script type="text/javascript" src="/static/js/page_handler.js"></script>
+	<script type="text/javascript" src="/static/js/map.js"></script>
+	<script type="text/javascript" src="/static/js/ui.js"></script>
+	<style type="text/css">
+
+@import url("http://github.com/simplegeo/polymaps/raw/v2.3.0/examples/example.css");
+@import url("http://github.com/protovis/protovis/raw/v3.3.1/examples/slider/ui-lightness/jquery-ui-1.8rc3.custom.css");
+@import url("/static/css/main.css");
+
+    </style>
+  </head>
+  <body>	
+
+	<div id="map"></div>
+	
+	<div id="header" class="uiBackground">	
+		<div id="masthead">
+			<span class="largeText">Meetup Map</span>
+			<br />
+			<span class="subText">Catchy Tagline</span>
+		</div>
+		<div id="filter">
+			<div class="fillerText">Show me meetups about</div>
+			<div id="topicFilter">
+				<div class="subText" id="selectedTopic">Any Topic</div>
+				<div id="topicList">
+				</div>
+			</div>
+			
+			<!-- 
+			<div id="typeFilterContainer">
+			    <div id="typeFilter" class="dropdownWrapper filterUI">
+			        <div class="dropdown">
+			            <div class="headlink">
+			                <div class="dropdownSelected buttonGradient">Anything</div>
+			                <img src="images/dropdown.png" />
+			                <div class="clearboth"></div>
+			                <ul class="dropdownOptions">
+									<li onclick="updateCategory('Anything')"><span class="dropdownOption">Anything</span></li>
+			                </ul>
+			            </div>
+			        </div>
+			    </div>
+			</div> 
+			-->
+			
+			<div class="fillerText">that are around</div>
+			<div id="sliderFilterContainer">
+				<div id="slider" class="filterUI"></div>
+			</div>
+			
+			<div id="sliderText" class="fillerText">o'clock</div>
+			
+			<div class="fillerText">scaled by popularity</div>
+			
+			<div id="callToAction">
+				<label for="callFilter" class="fillerText rightSide" id="callFilterText" style="color:#e6e6e6;">|</label>
+				<input type="text" id="phoneFilter" value="Phone Number" class="rightSide"></input>
+				<label for="callFilter" class="fillerText rightSide" id="callFilterText">Text me to remind me!</label>
+				<input type="checkbox" id="callFilter" class="fillerText rightSide"></input>
+			</div>
+	</div>
+	
+	<div id="info" class="uiBackground">
+		<div id="infoTitle" class="largeText">Event Name</div>
+		<div id="infoTime"  class="mediumText">Event Time</div>
+		<br />
+		<div id="infoDescription" class="mediumText">Description</div>
+		
+		<br />
+		
+		<div id="infoSave">Save This</div>
+	</div>
+	
+	<div id="saved" class="uiBackground">
+	
+	</div>
+	
+	<div id="hoverLabel">
+		Hover Text
+	</div>
+	
+  <script type="text/javascript">
+
+// page_handler.js
+$(window).resize(updateSize);
+updateSize();
+
+// map.js
+createMap();
+
+// ui.js
+initializeUI();
+
+   </script>
+	
+    <span id="copy">
+      &copy; 2010
+      <a href="http://www.cloudmade.com/">CloudMade</a>,
+      <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors,
+      <a href="http://creativecommons.org/licenses/by-sa/2.0/">CCBYSA</a>.
+    </span>
+  </body>
+</html>

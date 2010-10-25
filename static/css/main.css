@@ -1,0 +1,227 @@
+
+.uiBackground { background: #e6e6e6; }
+.largeText { font-size: 28px; font-weight: bold; color: #de117b; }
+.subText { font-size: 14px; font-weight: bold; color: #FFFFFF; }
+.mediumText { font-size:14px; color:#666666; }
+
+a {
+	color: #666;
+	font-weight: bold;
+}
+
+.fillerText { 
+	float:left;
+	font-size:14px; 
+	color:#999999; 
+	padding-left:10px; 
+	padding-right:10px; 
+}
+
+.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   user-select: none;
+}
+
+.layer circle:hover, .layer circle.selected {
+	fill: #FF2D9A;
+	fill-opacity: 1;
+	cursor: pointer;
+	stroke: #000000;
+	stroke-width: 3px;
+}
+
+.layer circle {
+	fill: #de117b; 
+	fill-opacity: 0.75; 
+	stroke: #890a4b;
+}
+
+/* blue */
+.layer circle.male { 
+	fill: #3d99cc; 
+	fill-opacity: 0.75; 
+	stroke: #235c7b; 
+}
+
+#topicFilter {
+	float:left; 
+	margin:-4px 0px 0px 0px; 
+	position:relative; 
+	width:180px; 
+	padding: 5px;
+	background: #de117b;
+}
+
+#topicFilter #topicList {
+	background: #de117b;
+	position:absolute; 
+	height: 200px; 
+	overflow:auto;
+	display:none; 
+	margin-left: -5px;
+	padding-top: 10px;
+}
+
+#topicFilter:hover #topicList {
+	display:block; 
+}
+
+.topicOption { 
+	width:100%;
+	display:block;
+	cursor:pointer;
+	float: left;
+}
+
+.topicOption:hover { 
+	background: #666;
+}
+
+.topicDropdownOption {
+	width:100%;
+	cursor:pointer;
+	font-size: 14px;
+	color:#FFF;
+	padding: 2px;
+}
+
+.checkboxButton {
+}
+
+/* generalized dropdown css */
+.buttonGradient {
+	background: #DDD; /* for non-css3 browsers */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF', endColorstr='#DDD'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#DDD)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #FFF,  #DDD); /* for firefox 3.6+ */ 
+}
+
+.dropdownFilterPrefix { display:block; float:right; color:#FFF; padding:15px 10px 15px 10px; }
+.dropdown { display: block; cursor:pointer; padding:0px; background-color: #5f5d5f;  }
+.dropdown .dropdownSelected { padding:5px; color: black; }
+.dropdown .dropdownSelected:hover { padding:5px; background-color: #37B1E4; }
+.dropdown img { position:absolute; top:3px; right:5px; } /* image on top */
+.dropdown .headlink { list-style:none; font-size:14px; font-weight: bold; color:#FFFFFF; padding:0px; width: 150px; text-align: left; }
+.dropdown .headlink ul { font-size:12px; list-style:none; margin:0px; padding:0px; display: none; }
+.dropdown .headlink:hover ul { display: block; }
+.dropdown .headlink ul li { font-size:12px; margin:0px; padding:5px 0px 5px 0px; }
+.dropdown .headlink ul li span { margin:5px; color:#999999; text-decoration:none; }
+.dropdown .headlink ul li:hover { background-color: #37B1E4; }
+.dropdown .headlink ul li:hover span { color:#FFFFFF; }
+
+
+.ui-slider {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.ui-state-focus {
+  outline: none;
+}
+
+/* more id specific stuff */
+
+html, body { height: 100%; background: #E6E6E6; font-family: Arial, Helvetica, sans-serif; }
+svg { display: block; }
+
+#header { 
+	height:100px; 
+	float:left; 
+}
+
+#masthead { 
+	padding: 10px; 
+}
+
+#map { 
+	position:absolute; 
+	top:100px; 
+	height:400px; 
+	width:100%; 
+	background: #FFFFFF; 
+	float:left; 
+}
+
+.rightSide { float:right; }
+
+/* styling the filter ui */
+.filterUI { position:absolute; top:-4px }
+
+#typeFilterContainer { float:left; margin:0px 0px 0px 0px; position:relative; width:150px; height:35px; }
+
+#sliderFilterContainer { float:left; margin: 0px; position:relative; width:100px; height:35px; padding-left:10px; padding-right:10px }
+#slider { left: 10px;  width: 100px; }
+
+#phoneFilter { width:80px; }
+
+/* info window */
+#info { 
+	position:absolute; 
+	top: 112px; 
+	right: 27px; 
+	width:300px; 
+	height:200px; 
+	padding:10px; 
+	overflow:auto;
+	display: none;
+	}
+	
+#saved { 
+	position:absolute; 
+	top: 362px; 
+	right: 27px; 
+	width:300px; 
+	height:200px; 
+	padding:10px; 
+	overflow:auto;
+	display: none;
+	}
+
+.unsaveEvent {
+	float: right;
+}
+
+#infoSave {
+	display:block;
+	background: #de117b;
+	cursor:pointer;
+	padding: 3px;
+	color:#FFF;
+}
+
+#infoSave:hover {
+	background: #666;
+}
+
+.unsaveEvent {	
+}
+
+.unsaveEvent:hover {
+	background: #de117b;
+	color: #FFF;
+}
+
+.savedItem {
+	font-size: 14;
+	color: #999;
+	display: block;
+	background: #DDD;
+	margin: 5px;
+	padding: 2px;
+}
+
+#hoverLabel { 
+	height: 25px; 
+	padding: 5px;
+	padding-top: 10px; 
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	color: #999; 
+	background: #eee; 
+	border: 2px solid #999;
+	border-radius: 15px;
+	-moz-border-radius: 15px; 
+	display: none;
+}
